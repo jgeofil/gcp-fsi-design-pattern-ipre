@@ -67,9 +67,7 @@ class InvestorData:
         """
         dateStamps = pd.date_range(start=startDate, end=endDate,
                                    freq=freq, normalize=True).to_list()
-        datePairs = {"-".join([str(dt.year), str(dt.month)])
-                     for dt in dateStamps}
-        return datePairs
+        return {"-".join([str(dt.year), str(dt.month)]) for dt in dateStamps}
 
     def get_empty_df(self) -> pd.DataFrame:
         """ Creates empty placeholder dataset of investor risk preference features.
@@ -88,11 +86,11 @@ class InvestorData:
         dimY = len(params["investor"]["attributes"])
         dim = (dimX, dimY)
 
-        investorData = pd.DataFrame(
+        return pd.DataFrame(
             data=np.full(dim, np.nan),
             index=None,
-            columns=params["investor"]["attributes"])
-        return investorData
+            columns=params["investor"]["attributes"],
+        )
 
     def gen_target(self) -> None:
         """ Generate random risk preferences (target) from Generalized
@@ -283,11 +281,11 @@ class InvestorData:
         for c in random_vars:
             if c <= card_quantiles[0]:
                 cardLevel.append(0)
-            elif c > card_quantiles[0] and c < card_quantiles[1]:
+            elif c < card_quantiles[1]:
                 cardLevel.append(1)
-            elif c >= card_quantiles[1] and c < card_quantiles[2]:
+            elif c < card_quantiles[2]:
                 cardLevel.append(2)
-            elif c >= card_quantiles[2]:
+            else:
                 cardLevel.append(3)
         self._investor_data['cardLevel'] = cardLevel
 
@@ -310,11 +308,11 @@ class InvestorData:
         for c in random_vars:
             if c <= edu_quantiles[0]:
                 edu.append('college')
-            elif c > edu_quantiles[0] and c < edu_quantiles[1]:
+            elif c < edu_quantiles[1]:
                 edu.append('NA')
-            elif c >= edu_quantiles[1] and c < edu_quantiles[2]:
+            elif c < edu_quantiles[2]:
                 edu.append('BSc')
-            elif c >= edu_quantiles[2] and c < edu_quantiles[3]:
+            elif c < edu_quantiles[3]:
                 edu.append('MSc')
             else:
                 edu.append('PhD')
@@ -334,9 +332,9 @@ class InvestorData:
             df, nc = 21, 1.06
             rv = stat.ncx2(df, nc)
             allrandom = []
-            for i in range(n_samples):
+            for _ in range(n_samples):
                 random_vars = [rv.rvs() for _ in range(n_spendings)]
-                random_vars = random_vars / sum(random_vars)
+                random_vars /= sum(random_vars)
                 allrandom.append(random_vars)
             allrandom = np.array(allrandom).reshape(n_samples, n_spendings)
             return np.round(allrandom, 2)

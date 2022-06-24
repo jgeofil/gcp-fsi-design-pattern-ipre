@@ -87,7 +87,7 @@ class AssetsWithMetricsAPIView(APIView):
             try:
                 portfolio.sell_existing()
             except MLServiceError as e:
-                logger.exception('Failed to get profit for assets: {}'.format(e))
+                logger.exception(f'Failed to get profit for assets: {e}')
                 return Response('Failed to get profit for assets', status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         portfolio.purchase(metrics, assets, invested_sum)
@@ -149,7 +149,7 @@ class PortfolioAdviceAPIView(APIView):
                 self.request.user.ml_uuid, investing_sum, risk_level
             )
         except MLServiceError as e:
-            logger.exception('Failed to get advice from the service: {}'.format(str(e)))
+            logger.exception(f'Failed to get advice from the service: {str(e)}')
             return Response('Failed to get advice from the service', status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         assets_with_statistics = get_concurrent(

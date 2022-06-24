@@ -58,7 +58,7 @@ class TestAssetsWithMetricsAPIView:
     @staticmethod
     def patch_error(mocker):
         mocker.patch(
-            '{}.get_basic_statistics_by_asset'.format(HELPERS_CLASS_PATH),
+            f'{HELPERS_CLASS_PATH}.get_basic_statistics_by_asset',
             side_effect=MLServiceError('Some exception..'),
         )
 
@@ -567,7 +567,10 @@ class TestPortfolioAdviceAPIView:
 
     @staticmethod
     def patch_error(mocker):
-        mocker.patch('{}.get_advice'.format(HELPERS_CLASS_PATH), side_effect=MLServiceError('Some exception..'))
+        mocker.patch(
+            f'{HELPERS_CLASS_PATH}.get_advice',
+            side_effect=MLServiceError('Some exception..'),
+        )
 
     def test_view_responses_internal_error_if_ml_provider_fails(self, mocker):
         self.patch_error(mocker)
@@ -743,7 +746,7 @@ class TestAssetDetailedStatisticAPIView:
         self.view = AssetDetailedStatisticAPIView.as_view()
         self.user = UserFactory()
         self.asset_name = 'OGGO'
-        self.url = '/assets/{}/stat/'.format(self.asset_name)
+        self.url = f'/assets/{self.asset_name}/stat/'
         self.response = DetailedStatistics(
             previous_close=Decimal('1'),
             current_price=Decimal('1.12'),

@@ -29,7 +29,7 @@ def main():
         django.setup()
         UserModel = get_user_model()
         parser = ArgumentParser()
-        parser.add_argument('--{}'.format(UserModel.USERNAME_FIELD))
+        parser.add_argument(f'--{UserModel.USERNAME_FIELD}')
         args, unknown = parser.parse_known_args(sys.argv)
         username = args.username
 

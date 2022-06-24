@@ -59,7 +59,10 @@ class Asset(models.Model):
         try:
             return self.with_statistics(ml_provider)
         except MLServiceError as e:
-            logger.warning('Failed to get basic info about {} asset: {}'.format(self.asset_name, str(e)))
+            logger.warning(
+                f'Failed to get basic info about {self.asset_name} asset: {str(e)}'
+            )
+
             self.statistics = None
             return self
 
@@ -68,8 +71,9 @@ class Asset(models.Model):
         purchasing_transaction = Transaction.objects.create(
             sum=invested_sum * Decimal('-1'),
             wallet=wallet,
-            name='Purchase of {} asset(s)'.format(len(assets)),
+            name=f'Purchase of {len(assets)} asset(s)',
         )
+
         for asset in assets:
             asset.transaction = purchasing_transaction
             asset.save()
@@ -79,12 +83,13 @@ class Asset(models.Model):
         Transaction.objects.create(
             sum=overall_sum_with_profit,
             wallet=wallet,
-            name='Sale of {} asset(s)'.format(len(assets)),
+            name=f'Sale of {len(assets)} asset(s)',
         )
+
         assets.delete()
 
     def __str__(self):
-        return '{} {}'.format(self.asset_name, self.overall_sum)
+        return f'{self.asset_name} {self.overall_sum}'
 
 
 class Metrics(models.Model):
@@ -109,8 +114,4 @@ class Metrics(models.Model):
         )
 
     def __str__(self):
-        return 'RoR {}%, Vol {}%, VaR {}%'.format(
-            self.rate_of_return,
-            self.volatility,
-            self.value_at_risk,
-        )
+        return f'RoR {self.rate_of_return}%, Vol {self.volatility}%, VaR {self.value_at_risk}%'

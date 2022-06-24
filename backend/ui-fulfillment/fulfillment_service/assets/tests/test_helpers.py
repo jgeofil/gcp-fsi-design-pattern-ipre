@@ -133,7 +133,7 @@ class TestMLServiceProviderGetAdvice:
 class TestMLServiceProviderGetBasicStatisticsByAsset:
     def setup_method(self):
         self.asset_name = 'ABC'
-        self.url = '{}/stat/?asset_name={}'.format(ML_SERVICE_URL, self.asset_name)
+        self.url = f'{ML_SERVICE_URL}/stat/?asset_name={self.asset_name}'
         self.provider = MLServiceProvider()
         self.request = {'change_for_day': 1.391809898486656, 'current_price': 2438.0776, 'long_name': 'ABC Inc.'}
 
@@ -166,8 +166,14 @@ class TestMLServiceProviderGetBasicStatisticsByAsset:
 class TestMLServiceProviderGetStatisticsByAsset:
     def setup_method(self):
         self.asset_name = 'ABC'
-        self.detailed_url = '{}/stat/detailed/?asset_name={}'.format(ML_SERVICE_URL, self.asset_name)
-        self.history_url = '{}/stat/history/?asset_name={}'.format(ML_SERVICE_URL, self.asset_name)
+        self.detailed_url = (
+            f'{ML_SERVICE_URL}/stat/detailed/?asset_name={self.asset_name}'
+        )
+
+        self.history_url = (
+            f'{ML_SERVICE_URL}/stat/history/?asset_name={self.asset_name}'
+        )
+
         self.provider = MLServiceProvider()
         self.detailed = {
             'previous_close': '1.3388',

@@ -17,4 +17,4 @@ def capital_markets_returns(data, context):
     try: 
         returns = MarketReturns(quotes).fit(quotes)
     except TypeError: 
-        logger.info(f"No additional data to load. Fetching completed.")
+        logger.info("No additional data to load. Fetching completed.")

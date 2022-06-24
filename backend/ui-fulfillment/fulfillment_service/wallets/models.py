@@ -40,7 +40,7 @@ class Wallet(models.Model):
         return sum(t.sum for t in Transaction.objects.filter(wallet=self))
 
     def __str__(self):
-        return '{} {}: {}'.format(self.bank_name, self.card_number, self.balance)
+        return f'{self.bank_name} {self.card_number}: {self.balance}'
 
 
 class Transaction(models.Model):
@@ -51,7 +51,7 @@ class Transaction(models.Model):
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '{} {} {}'.format(self.created_at, self.name, self.sum)
+        return f'{self.created_at} {self.name} {self.sum}'
 
     class Meta:
         ordering = ('created_at',)

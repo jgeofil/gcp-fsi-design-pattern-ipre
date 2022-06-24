@@ -272,15 +272,16 @@ def make_recommendation(uuid: str, riskAversion: float = None):
         dict: personalized recommendation on investment products, investment performance metrics.
     """
     mypy = PortfolioOptimizer(uuid)
-    if not isinstance(riskAversion, float):
-        riskAversion = mypy.get_risk_aversion(uuid)
-    else:
-        riskAversion = mypy.scale_value(riskAversion)
+    riskAversion = (
+        mypy.scale_value(riskAversion)
+        if isinstance(riskAversion, float)
+        else mypy.get_risk_aversion(uuid)
+    )
+
     weights = mypy.fit(riskAversion)
     metrics = mypy.get_portfolio_metrics(rf=0.025)
-    recommendation = {
+    return {
         "portfolioComposition": weights,
         "portfolioMetrics": metrics,
         "riskAversion": mypy.unscale_value(riskAversion),
     }
-    return recommendation

@@ -33,11 +33,10 @@ def re_engine():
         return 'Received unexpected UUID', 400
     if riskAversion and (riskAversion < 0.0 or riskAversion > 1.0):
         return 'Received invalid risk aversion', 400
-    result = recommendation_engine.make_recommendation(
+    return recommendation_engine.make_recommendation(
         uuid=uuid,
         riskAversion=riskAversion,
     )
-    return result
 
 
 @app.route('/stat/', methods=['GET'])

@@ -17,9 +17,8 @@ project_id = query['project_id']
 location = query['location']
 composer_environment = query['composer_environment']
 
-environment_url = (
-    'https://composer.googleapis.com/v1beta1/projects/{}/locations/{}'
-    '/environments/{}').format(project_id, location, composer_environment)
+environment_url = f'https://composer.googleapis.com/v1beta1/projects/{project_id}/locations/{location}/environments/{composer_environment}'
+
 composer_response = authed_session.request('GET', environment_url)
 environment_data = composer_response.json()
 airflow_uri = environment_data['config']['airflowUri']

@@ -156,7 +156,7 @@ class MarketReturns(MarketData):
         logger.info("Comparing remote returns from GCS to most recent returns.")
         if isinstance(self.remoteReturns, pd.DataFrame):
             remote_date = self.remoteReturns.index[-1]
-            logger.info(f"Comparing calculated returns data with one from GCS bucket")
+            logger.info("Comparing calculated returns data with one from GCS bucket")
             self.returns = self.returns.loc[remote_date:, :]
             self.returns.drop(self.returns.index[0], axis=0, inplace=True)
         return self.returns

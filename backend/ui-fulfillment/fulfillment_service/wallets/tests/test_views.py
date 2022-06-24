@@ -78,7 +78,7 @@ class TestTransactionListAPIView:
         self.view = TransactionListAPIView.as_view()
         self.user = UserFactory()
         self.wallet = WalletFactory(user=self.user)
-        self.url = '/wallets/{}/transactions/'.format(self.wallet.id)
+        self.url = f'/wallets/{self.wallet.id}/transactions/'
         TransactionFactory()  # create transaction in another wallet
 
     def test_transaction_get_does_not_return_transactions_for_stranger_wallet(self):
@@ -138,7 +138,7 @@ class TestTopUpWalletAPIView:
         self.view = TopUpWalletAPIView.as_view()
         self.user = UserFactory()
         self.wallet = WalletFactory(user=self.user)
-        self.url = '/wallets/{}/topup/'.format(self.wallet.id)
+        self.url = f'/wallets/{self.wallet.id}/topup/'
         TransactionFactory()  # create transaction in another wallet
 
     def test_topup_with_invalid_uuid_returns_bad_request_status(self):
@@ -158,7 +158,10 @@ class TestTopUpWalletAPIView:
 
     def test_topup_with_stranger_wallet_returns_bad_request_status(self):
         stranger_wallet = WalletFactory()
-        request = self.factory.post('/wallets/{}/topup/'.format(stranger_wallet.id), {'sum': '123.45'})
+        request = self.factory.post(
+            f'/wallets/{stranger_wallet.id}/topup/', {'sum': '123.45'}
+        )
+
         force_authenticate(request, user=self.user)
 
         response = self.view(request, wallet_id=stranger_wallet.id)

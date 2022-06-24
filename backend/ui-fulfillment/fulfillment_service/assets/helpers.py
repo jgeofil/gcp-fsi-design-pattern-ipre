@@ -20,7 +20,7 @@ class Statistics:
             if hasattr(self, field_name) and getattr(self, field_name) is not None:
                 value, value_direction = abs_with_direction(getattr(self, field_name))
                 setattr(self, field_name, value)
-                setattr(self, '{}_direction'.format(field_name), value_direction)
+                setattr(self, f'{field_name}_direction', value_direction)
 
         for field in ['profit', 'change_for_day', 'change_for_day_sum']:
             run_abs_with_direction(field)
@@ -128,7 +128,7 @@ class MLServiceProvider:
         params = {'asset_name': asset_name}
         session = requests_session()
         try:
-            with session.get(ML_SERVICE_URL + '/stat/', params=params) as response:
+            with session.get(f'{ML_SERVICE_URL}/stat/', params=params) as response:
                 response.raise_for_status()
                 data = response.json()
         except HTTPError as e:
@@ -167,10 +167,10 @@ class MLServiceProvider:
         params = {'asset_name': asset_name}
         session = requests_session()
         try:
-            with session.get(ML_SERVICE_URL + '/stat/detailed/', params=params) as response:
+            with session.get(f'{ML_SERVICE_URL}/stat/detailed/', params=params) as response:
                 response.raise_for_status()
                 data = response.json()
-            with session.get(ML_SERVICE_URL + '/stat/history/', params=params) as history:
+            with session.get(f'{ML_SERVICE_URL}/stat/history/', params=params) as history:
                 history.raise_for_status()
                 history = history.json()
         except HTTPError as e:
